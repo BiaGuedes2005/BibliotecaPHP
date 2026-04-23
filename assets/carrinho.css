@@ -1,0 +1,65 @@
+.carrinho-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+/* Área dos livros */
+.lista-itens {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex: 2;
+}
+
+.item-livro {
+    width: 150px;
+    height: 180px;
+    background-color: #bdbdbd;
+    border-radius: 20px;
+}
+
+/* Card de Resumo (Direita) */
+.resumo-compra {
+    background-color: #bdbdbd;
+    padding: 30px;
+    border-radius: 25px;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.resumo-compra h3 {
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.valor {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.info-cliente p {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* Botão Azul Escuro */
+.btn-confirma {
+    background-color: #3b4573; /* Azul marinho da imagem */
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-confirma:hover {
+    background-color: #2a3255;
+}

@@ -1,0 +1,15 @@
+select {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: #bdbdbd;
+    border-radius: 20px;
+    outline: none;
+    appearance: none; /* Remove a seta padrão do navegador */
+    cursor: pointer;
+}
+
+/* Estilo para quando o campo de ADM aparecer com animação suave */
+#campo_adm {
+    transition: all 0.3s ease;
+}
