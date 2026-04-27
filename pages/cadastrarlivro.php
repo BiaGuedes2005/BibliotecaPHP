@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 if (!isset($_SESSION['logado'])) {
@@ -29,7 +30,6 @@ if (!isset($_SESSION['logado'])) {
     <main class="content">
         <header class="top-bar">
             <h1>Cadastrar Livro</h1>
-            <div class="profile-dot"></div>
         </header>
 
         <form action="processa_livro.php" method="POST" class="cadastro-container">

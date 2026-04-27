@@ -43,20 +43,6 @@
         </div>
     </div>
 
-    <script>
-        function verificarTipo() {
-            const tipo = document.getElementById('tipo').value;
-            const campoAdm = document.getElementById('campo_adm');
-            const inputSenhaAdm = document.getElementById('senha_adm');
-
-            if (tipo === 'adm') {
-                campoAdm.style.display = 'block';
-                inputSenhaAdm.setAttribute('required', 'required');
-            } else {
-                campoAdm.style.display = 'none';
-                inputSenhaAdm.removeAttribute('required');
-            }
-        }
-    </script>
+    <script src="../assets/scripts.js"></script>
 </body>
 </html>
