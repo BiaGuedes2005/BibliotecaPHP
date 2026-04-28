@@ -1,93 +1,147 @@
-.cadastro-container {
+body {
+    background-color: #E8DBD1;
+    margin: 0;
+    font-family: sans-serif;
     display: flex;
-    gap: 50px;
-    margin-top: 30px;
-    background-image: url('caminho_da_sua_imagem_de_fundo.png'); /* Opcional: imagem dos livros voando */
-    background-size: cover;
-    background-position: center;
+    min-height: 100vh;
 }
 
-/* Seção da Imagem */
-.image-upload-section {
+
+.main-wrapper {
+    flex: 1;
+    margin-left: 100px;
+    padding: 40px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    flex: 1;
+    align-items: center; 
 }
 
-.image-placeholder {
-    width: 250px;
-    height: 250px;
-    background-color: #bdbdbd;
-    border-radius: 25px;
+
+.top-bar {
+    max-width: 950px;
+    width: 90%;
+    margin-bottom: 25px;
+}
+
+.titulo-pagina {
+    color: #3A536B;
+    border-left: 6px solid #F15256;
+    padding-left: 15px;
+    margin: 0;
+    font-size: 2rem;
+}
+
+
+.cadastro-container {
+    display: flex !important;
+    flex-direction: row !important;
+    background-color: #ffffff !important; 
+    padding: 45px;
+    border-radius: 30px;
+    box-shadow: 0 10px 45px rgba(0,0,0,0.06);
+    gap: 45px;
+    max-width: 950px;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+
+.image-upload-section {
+    flex: 0 0 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.image-placeholder-container {
+    width: 240px;
+    height: 330px;
+    background-color: #E8DBD1 !important;
+    border: 3px dashed #9686C0;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+
+    
+    background-size: cover;     
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.image-placeholder i {
-    font-size: 80px;
-    color: #333;
+.image-placeholder-container i {
+    font-size: 60px;
+    color: #9686C0;
 }
 
-.image-upload-section input {
-    border-radius: 15px;
-    border: none;
-    padding: 8px;
-    background: #e0e0e0;
-}
 
-/* Campos do Formulário */
 .form-fields {
-    flex: 2;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 18px;
 }
 
 .input-row {
-    display: flex;
+    display: flex !important;
     gap: 20px;
+    width: 100%;
 }
 
-.input-full, .input-half {
+.input-half {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 5px;
 }
 
-.input-full { width: 100%; }
-.input-half { width: 50%; }
+.input-full {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
 label {
-    font-size: 0.9rem;
-    font-weight: 500;
+    color: #9686C0;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin-bottom: 6px;
 }
 
 input {
-    background-color: #bdbdbd;
-    border: none;
-    border-radius: 20px;
-    padding: 12px;
+    background-color: #f0f0f0 !important;
+    border: none !important;
+    border-radius: 15px !important;
+    padding: 14px 18px !important;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
     outline: none;
 }
 
-/* Botão */
+ 
 .button-container {
     display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
+    justify-content: flex-start; 
+    margin-left: 10%; 
+    margin-top: 25px;
+    width: 100%;
 }
 
 .btn-cadastrar {
-    background-color: #bdbdbd;
+    background-color: #3A536B !important;
+    color: white !important;
     border: none;
-    padding: 10px 40px;
-    border-radius: 20px;
+    padding: 16px 60px; 
+    border-radius: 15px;
     font-weight: bold;
+    font-size: 1.1rem;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 .btn-cadastrar:hover {
-    background-color: #a0a0a0;
+    background-color: #F15256 !important;
+    transform: translateY(-2px);
 }

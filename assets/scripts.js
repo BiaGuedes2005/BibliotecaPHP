@@ -1,5 +1,3 @@
-// Este código vai no arquivo .js
-// O arquivo .js fica limpo, apenas com a lógica
 function mostrarPlanilha(tipo, dadosUsuarios, dadosProdutos) {
     document.getElementById('minha-planilha').innerHTML = '';
     
@@ -7,7 +5,7 @@ function mostrarPlanilha(tipo, dadosUsuarios, dadosProdutos) {
 
     if (tipo === 'usuarios') {
         config = {
-            data: dadosUsuarios, // Usa o dado que veio por parâmetro
+            data: dadosUsuarios, 
             columns: [
                 { title: 'Nome do Usuário', width: 300 },
                 { title: 'Cargo', width: 150, type: 'dropdown', source: ['adm', 'usuario'] },
@@ -16,7 +14,7 @@ function mostrarPlanilha(tipo, dadosUsuarios, dadosProdutos) {
         };
     } else {
         config = {
-            data: dadosProdutos, // Usa o dado que veio por parâmetro
+            data: dadosProdutos,
             columns: [
                 { title: 'Livro', width: 300 },
                 { title: 'Autor', width: 200 },
@@ -42,4 +40,61 @@ function verificarTipo() {
                 campoAdm.style.display = 'none';
                 inputSenhaAdm.removeAttribute('required');
             }
+}
+
+function previewImage() {
+    // Pega o que o usuario digitou
+    const url = document.getElementById('img_url').value.trim();
+    // Pega o quadrado onde a imagem vai aparecer
+    const container = document.getElementById('preview-container');
+    // Pega o icone da camera para esconder ele
+    const icone = document.getElementById('camera-icon');
+
+    if (url) {
+        // Aplica a imagem no fundo do container
+        container.style.backgroundImage = "url('" + url + "')";
+        // Esconde o icone cinza da camera
+        icone.style.display = 'none';
+    } else {
+        // Se apagar a URL, volta ao estado original
+        container.style.backgroundImage = 'none';
+        icone.style.display = 'block';
+    }
+}
+
+
+
+function mostrarPlanilha(tipo, dadosUsuarios, dadosProdutos) {
+    let container = document.getElementById('minha-planilha');
+    
+    // Limpa o container antes de renderizar uma nova
+    container.innerHTML = '';
+
+    let colunas = [];
+    let dadosParaExibir = [];
+
+    if (tipo === 'usuarios') {
+        dadosParaExibir = dadosUsuarios;
+        colunas = [
+            { title: 'Nome', width: 300 },
+            { title: 'Tipo', width: 150 },
+            { title: 'Ativo', width: 100, type: 'checkbox' }
+        ];
+    } else if (tipo === 'produtos') {
+        dadosParaExibir = dadosProdutos;
+        colunas = [
+            { title: 'Livro', width: 350 },
+            { title: 'Autor', width: 250 },
+            { title: 'Preço (R$)', width: 100, type: 'number' }
+        ];
+    }
+
+    // Inicializa o JSpreadsheet
+    jspreadsheet(container, {
+        data: dadosParaExibir,
+        columns: colunas,
+        minDimensions: [3, 10],
+        tableOverflow: true,
+        tableWidth: '100%',
+    });
 }

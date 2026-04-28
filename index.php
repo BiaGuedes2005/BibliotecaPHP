@@ -2,7 +2,7 @@
 <?php
 require_once 'includes/functions.php';
 
-// Se NÃO existir a sessão 'logado', manda para a pasta pages/login.php
+// Se NAO existir a sessao 'logado', manda para a pasta pages/login.php
 if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
     header("Location: pages/login.php"); // Aqui estava index.php, mudei para o caminho do login
     exit();
@@ -51,35 +51,27 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
         <section class="books-section">
     <h2>Livros</h2>
     
-    <div class="livros-grid" style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+    <div class="livros-grid">
         <?php
-        // 1. Verificamos se a sessão existe e se não está vazia
         if (isset($_SESSION['meus_livros']) && !empty($_SESSION['meus_livros'])) {
-            
-            // 2. Iniciamos o loop
             foreach ($_SESSION['meus_livros'] as $livro) { 
         ?>
-                <div class="card-livro" style="width: 200px; border: 1px solid #ddd; border-radius: 10px; padding: 15px; background: #fff; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <img src="<?php echo htmlspecialchars($livro['img_url']); ?>" alt="Capa" style="width: 100%; height: 250px; object-fit: cover; border-radius: 5px;">
-                        <h3 class="titulo-livro" style="font-size: 1.1rem; margin: 10px 0 5px;"><?php echo htmlspecialchars($livro['titulo']); ?></h3>
-                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 5px;"><?php echo htmlspecialchars($livro['autor']); ?></p>
-                        <span style="font-weight: bold; color: #2ecc71; display: block; margin-bottom: 15px;">R$ <?php echo htmlspecialchars($livro['valor']); ?></span>
+                <div class="card-livro">
+                    <div class="card-info">
+                        <img src="<?php echo htmlspecialchars($livro['img_url']); ?>" alt="Capa">
+                        <h3 class="titulo-livro"><?php echo htmlspecialchars($livro['titulo']); ?></h3>
+                        <p class="autor-livro"><?php echo htmlspecialchars($livro['autor']); ?></p>
+                        <span class="preco-livro">R$ <?php echo htmlspecialchars($livro['valor']); ?></span>
                     </div>
                     
-                    <a href="pages/carrinho.php?add=<?php echo urlencode($livro['titulo']); ?>" 
-                       style="background-color: #333; color: white; text-decoration: none; text-align: center; padding: 10px; border-radius: 5px; font-size: 0.9rem; transition: 0.3s;"
-                       onmouseover="this.style.backgroundColor='#555'" 
-                       onmouseout="this.style.backgroundColor='#333'">
+                    <a href="pages/carrinho.php?add=<?php echo urlencode($livro['titulo']); ?>" class="btn-adicionar">
                        <i class="fas fa-shopping-cart"></i> Adicionar
                     </a>
                 </div>
         <?php 
-            } // Fim do foreach
-            
+            } 
         } else { 
-            // 3. Caso não existam livros
-            echo "<p>Nenhum livro cadastrado.</p>";
+            echo "<p class='msg-vazia'>Nenhum livro cadastrado no momento.</p>";
         } 
         ?>
     </div>
@@ -89,17 +81,17 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
     const inputPesquisa = document.getElementById('inputPesquisa');
     
     inputPesquisa.addEventListener('keyup', function() {
-        // Pega o valor digitado e transforma em minúsculo
+        // Pega o valor digitado e transforma em minusculo
         let busca = inputPesquisa.value.toLowerCase();
         
         // Pega todos os cards de livros
         let cards = document.querySelectorAll('.card-livro');
         
         cards.forEach(card => {
-            // Pega o texto do título dentro do card
+            // Pega o texto do titulo dentro do card
             let titulo = card.querySelector('.titulo-livro').innerText.toLowerCase();
             
-            // Se o título contiver o que foi digitado, mostra. Senão, esconde.
+            // Se o titulo contiver o que foi digitado, vai mostrar os livros correspondentes, se nao tiver, nao mostra nada
             if (titulo.includes(busca)) {
                 card.style.display = "flex";
             } else {

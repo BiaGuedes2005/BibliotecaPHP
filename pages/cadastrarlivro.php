@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 if (!isset($_SESSION['logado'])) {
@@ -27,19 +26,21 @@ if (!isset($_SESSION['logado'])) {
         </div>
     </nav>
 
-    <main class="content">
+    <main class="main-wrapper">
         <header class="top-bar">
-            <h1>Cadastrar Livro</h1>
+            <h1 class="titulo-pagina">Cadastrar Livro</h1>
         </header>
 
         <form action="processa_livro.php" method="POST" class="cadastro-container">
             
             <div class="image-upload-section">
-                <label for="img_url">Img URL</label>
-                <div class="image-placeholder">
-                    <i class="fas fa-camera"></i>
-                </div>
-                <input type="text" id="img_url" name="img_url" placeholder="http://...">
+                <label for="img_url">URL da Capa</label>
+                <div class="image-placeholder-container" id="preview-container">
+                <i class="fas fa-camera" id="camera-icon"></i>
+            </div>
+
+            <input type="text" id="img_url" name="img_url" oninput="previewImage()" placeholder="Cole a URL aqui...">
+                
             </div>
 
             <div class="form-fields">
@@ -92,5 +93,7 @@ if (!isset($_SESSION['logado'])) {
             </div>
         </form>
     </main>
+
+    <script src="../assets/scripts.js"></script>
 </body>
 </html>

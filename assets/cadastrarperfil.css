@@ -5,11 +5,11 @@ select {
     background-color: #bdbdbd;
     border-radius: 20px;
     outline: none;
-    appearance: none; /* Remove a seta padrão do navegador */
+    appearance: none; 
     cursor: pointer;
 }
 
-/* Estilo para quando o campo de ADM aparecer com animação suave */
+
 #campo_adm {
     transition: all 0.3s ease;
 }

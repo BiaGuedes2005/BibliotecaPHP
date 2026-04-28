@@ -2,7 +2,7 @@
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Pegamos todos os campos que você colocou no formulário
+    // Campos do formulario
     $novoLivro = [
         'titulo'    => $_POST['titulo'],
         'autor'     => $_POST['autor'],
@@ -15,15 +15,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'img_url'   => $_POST['img_url']
     ];
 
-    // Se a lista de livros não existir na sessão, criamos ela
+    // Se nao tiver lista de livros, ira criar ela
     if (!isset($_SESSION['meus_livros'])) {
         $_SESSION['meus_livros'] = [];
     }
 
-    // Adiciona o novo livro no início da lista (para aparecer primeiro no index)
+    // Adiciona o novo livro
     array_unshift($_SESSION['meus_livros'], $novoLivro);
 
-    // Redireciona de volta para a home
+    // Redireciona para o index
     header("Location: ../index.php");
     exit();
 }

@@ -1,11 +1,11 @@
 <?php
-// O '../' é obrigatório porque o functions.php está fora da pasta pages
+
 require_once '../includes/functions.php'; 
 
-// 1. INICIALIZAÇÃO DA VARIÁVEL TOTAL (Essencial para não dar erro na linha 150)
+// Inicia a variavel total
 $total = 0;
 
-// Verifica se chegou um pedido de "adicionar" pela URL do index
+// Verifica o "adicionar" na URL do index
 if (isset($_GET['add'])) {
     $tituloParaAdicionar = $_GET['add'];
     adicionarAoCarrinho($tituloParaAdicionar);
@@ -13,9 +13,23 @@ if (isset($_GET['add'])) {
     exit();
 }
 
-// Lógica de Limpar (Caso você tenha implementado no functions.php)
+//Limpar Carrinho
 if (isset($_GET['limpar'])) {
     $_SESSION['carrinho'] = [];
+    header("Location: carrinho.php");
+    exit();
+}
+
+//remove o livro especifico 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_remover'])) {
+    $id = $_POST['id_remover'];
+    
+    if (isset($_SESSION['carrinho'][$id])) {
+        unset($_SESSION['carrinho'][$id]);
+        // Reorganiza os indices do array para nao quebrar o loop
+        $_SESSION['carrinho'] = array_values($_SESSION['carrinho']);
+    }
+    
     header("Location: carrinho.php");
     exit();
 }
@@ -25,58 +39,9 @@ if (isset($_GET['limpar'])) {
 <head>
     <meta charset="UTF-8">
     <title>Seu Carrinho</title>
-    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="stylesheet" href="../assets/style.css"> 
+    <link rel="stylesheet" href="../assets/carrinho.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .main-wrapper {
-            margin-left: 80px; 
-            margin-right: 350px; 
-            padding: 20px;
-        }
-
-        .checkout-sidebar {
-            position: fixed;
-            right: 0;
-            top: 0;
-            width: 350px;
-            height: 100vh;
-            background: #f9f9f9;
-            border-left: 1px solid #ddd;
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
-            z-index: 1000;
-        }
-
-        .checkout-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            flex-grow: 1;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 0.85rem;
-            color: #555;
-            margin-bottom: 5px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        .total-section {
-            margin-top: auto;
-            padding-top: 20px;
-            border-top: 2px solid #eee;
-        }
-    </style>
 </head>
 <body>
 
@@ -92,30 +57,39 @@ if (isset($_GET['limpar'])) {
 
     <div class="main-wrapper">
         <header class="top-bar">
-            <h1>Seu carrinho</h1>
+            <h1 class="titulo-pagina">Seu carrinho</h1>
         </header>
 
         <div class="itens-lista">
             <?php 
             if (isset($_SESSION['carrinho']) && !empty($_SESSION['carrinho'])) {
-                foreach ($_SESSION['carrinho'] as $item) {
-                    // Lógica de limpeza do valor para cálculo
+                
+                foreach ($_SESSION['carrinho'] as $chave => $item) {
+                    
+                    
                     $valorLimpo = str_replace(['R$', ' ', '.'], '', $item['valor']);
                     $valorNumerico = (float)str_replace(',', '.', $valorLimpo);
                     
-                    // Soma acumulada
+                    
                     $total += $valorNumerico;
                     ?>
                     
-                    <div class="item-carrinho" style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px; margin-bottom: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-                        <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="item-carrinho">
+                        <div class="item-info" style="display: flex; align-items: center; gap: 15px;">
                             <img src="<?php echo htmlspecialchars($item['img_url']); ?>" style="width: 70px; height: 90px; object-fit: cover; border-radius: 6px;">
                             <div>
                                 <h3 style="margin: 0;"><?php echo htmlspecialchars($item['titulo']); ?></h3>
                                 <p style="margin: 5px 0; color: #777;"><?php echo htmlspecialchars($item['autor']); ?></p>
+                                
+                                <form action="carrinho.php" method="POST" style="margin-top: 8px;">
+                                    <input type="hidden" name="id_remover" value="<?php echo $chave; ?>">
+                                    <button type="submit" style="background:none; border:none; color:#F15256; cursor:pointer; padding:0; font-size: 0.85rem;">
+                                        <i class="fas fa-trash-alt"></i> Remover
+                                    </button>
+                                </form>
                             </div>
                         </div>
-                        <div style="font-weight: bold; color: #2ecc71; font-size: 1.2rem;">
+                        <div class="item-preco" style="font-weight: bold; color: #2ecc71; font-size: 1.2rem;">
                             R$ <?php echo htmlspecialchars($item['valor']); ?>
                         </div>
                     </div>
@@ -159,7 +133,7 @@ if (isset($_GET['limpar'])) {
                     </span>
                 </div>
                 
-                <button type="submit" style="width: 100%; background: #2ecc71; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer;">
+                <button type="submit" class="btn-finalizar" style="width: 100%; background: #2ecc71; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer;">
                     Finalizar Compra
                 </button>
 

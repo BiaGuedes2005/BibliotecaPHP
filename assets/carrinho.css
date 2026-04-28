@@ -1,65 +1,134 @@
-.carrinho-container {
+.main-wrapper {
+    margin-left: 90px;
+    margin-right: 380px; 
+    padding: 40px;
+}
+
+
+.titulo-pagina {
+    color: #3A536B;
+    border-left: 6px solid #F15256;
+    padding-left: 15px;
+    margin-bottom: 30px;
+}
+
+
+.item-carrinho {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 30px;
-    margin-top: 40px;
+    align-items: center;
+    background: #FFFFFF;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-/* Área dos livros */
-.lista-itens {
+.item-info {
     display: flex;
+    align-items: center;
     gap: 20px;
-    flex-wrap: wrap;
-    flex: 2;
 }
 
-.item-livro {
-    width: 150px;
-    height: 180px;
-    background-color: #bdbdbd;
-    border-radius: 20px;
+.item-info img {
+    width: 80px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
-/* Card de Resumo (Direita) */
-.resumo-compra {
-    background-color: #bdbdbd;
-    padding: 30px;
-    border-radius: 25px;
-    width: 280px;
+.item-info h3 { color: #3A536B; }
+.item-info p { color: #9686C0; }
+
+.item-preco {
+    font-weight: bold;
+    color: #76B891; 
+    font-size: 1.3rem;
+}
+
+
+.checkout-sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 380px;
+    height: 100vh;
+    background: #FFFFFF;
+    padding: 40px 30px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.05);
+    z-index: 100;
 }
 
-.resumo-compra h3 {
-    font-size: 1.1rem;
-    font-weight: 400;
+.checkout-sidebar h2 {
+    color: #3A536B;
+    margin-bottom: 25px;
 }
 
-.valor {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
+
+.input-group { margin-bottom: 15px; }
+
+.input-group label {
+    display: block;
+    color: #9686C0;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
 }
 
-.info-cliente p {
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-    color: #333;
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    background: #E8DBD1;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.3s;
 }
 
-/* Botão Azul Escuro */
-.btn-confirma {
-    background-color: #3b4573; /* Azul marinho da imagem */
+.input-group input:focus {
+    background: white;
+    border-color: #9686C0;
+}
+
+
+.btn-finalizar {
+    width: 100%;
+    background: #3A536B;
     color: white;
     border: none;
-    padding: 12px;
-    border-radius: 20px;
+    padding: 18px;
+    border-radius: 15px;
     font-weight: bold;
+    font-size: 1.1rem;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: 0.3s;
 }
 
-.btn-confirma:hover {
-    background-color: #2a3255;
+.btn-finalizar:hover {
+    background: #F15256; 
+}
+
+.total-valor {
+    color: #76B891;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.top-bar {
+    width: 100%;
+    max-width: 1200px; 
+    margin-bottom: 35px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.titulo-pagina {
+    color: #3A536B;           
+    border-left: 6px solid #F15256; 
+    padding-left: 15px;       
+    margin: 0;               
+    font-size: 2rem;          
+    font-weight: bold;
 }
