@@ -1,29 +1,27 @@
 <?php
-session_start();
+include '../includes/conexao.php';
+require_once '../includes/functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Campos do formulario
-    $novoLivro = [
-        'titulo'    => $_POST['titulo'],
-        'autor'     => $_POST['autor'],
-        'editora'   => $_POST['editora'],
-        'ano'       => $_POST['ano'],
-        'categoria' => $_POST['categoria'],
-        'sobre'     => $_POST['sobre'],
-        'descricao' => $_POST['descricao'],
-        'valor'     => $_POST['valor'],
-        'img_url'   => $_POST['img_url']
-    ];
+    $titulo    = trim($_POST['titulo']);
+    $autor     = trim($_POST['autor']);
+    $editora   = trim($_POST['editora']);
+    $ano       = trim($_POST['ano']);
+    $categoria = trim($_POST['categoria']);
+    $sobre     = trim($_POST['sobre']);
+    $descricao = trim($_POST['descricao']);
+    $valor     = trim($_POST['valor']);
+    $img_url   = trim($_POST['img_url']);
+    $usuario_id = $_SESSION['usuario_id'];
 
-    // Se nao tiver lista de livros, ira criar ela
-    if (!isset($_SESSION['meus_livros'])) {
-        $_SESSION['meus_livros'] = [];
+    $stmt = $conn->prepare("INSERT INTO livros (titulo, autor, editora, ano, categoria, sobre, descricao, valor, img_url, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssissssi", $titulo, $autor, $editora, $ano, $categoria, $sobre, $descricao, $valor, $img_url, $usuario_id);
+
+    if ($stmt->execute()) {
+        header("Location: ../index.php");
+        exit();
+    } else {
+        echo "<script>alert('Erro ao cadastrar livro. Tente novamente.'); window.history.back();</script>";
     }
-
-    // Adiciona o novo livro
-    array_unshift($_SESSION['meus_livros'], $novoLivro);
-
-    // Redireciona para o index
-    header("Location: ../index.php");
-    exit();
 }
+?>

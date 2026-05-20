@@ -1,55 +1,52 @@
 <?php
-session_start();
+include '../includes/conexao.php';
 require_once '../includes/functions.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    //dados basicos que usuario e adm tem
     $nome = trim($_POST['nome']);
     $senha = $_POST['senha'];
     $tipo = $_POST['tipo'];
 
-    // vai verificar ser os campos de nome e senha estao preenchidos 
     if (empty($nome) || empty($senha)) {
         echo "<script>alert('Por favor, preencha nome e senha!'); window.history.back();</script>";
         exit();
     }
 
-    // No caso de ADM, ai sim verifica a senha especial que e PROJETO2026
+    // Verifica senha mestra se for ADM
     if ($tipo === "adm") {
-        $senha_mestra_adm = "PROJETO2026"; //senha
         $senha_digitada_adm = isset($_POST['senha_adm']) ? $_POST['senha_adm'] : '';
-
         if (empty($senha_digitada_adm)) {
             echo "<script>alert('Para ADM, a senha mestra é obrigatória!'); window.history.back();</script>";
             exit();
         }
-
-        if ($senha_digitada_adm !== $senha_mestra_adm) {
+        if (!verificarSenhaAdm($senha_digitada_adm)) {
             echo "<script>alert('Senha de ADM incorreta!'); window.history.back();</script>";
             exit();
         }
     }
 
-    //Salvar na sessao
-    if (!isset($_SESSION['usuarios_registrados'])) {
-        $_SESSION['usuarios_registrados'] = [];
-    }
-    
-    $_SESSION['usuarios_registrados'][$nome] = [
-        'nome' => $nome,
-        'senha' => $senha,
-        'tipo' => $tipo
-    ];
+    // Salva no banco
+    $resultado = cadastrarUsuario($nome, $senha, $tipo);
 
-    $_SESSION['logado'] = true;
-    $_SESSION['usuario_nome'] = $nome;
-    $_SESSION['tipo_usuario'] = $tipo;
+    if ($resultado === true) {
+        $stmt = $conn->prepare("SELECT * FROM usuarios WHERE nome = ?");
+        $stmt->bind_param("s", $nome);
+        $stmt->execute();
+        $usuario = $stmt->get_result()->fetch_assoc();
 
-    if ($tipo === "adm") {
-        header("Location: adm_dashboard.php");//Manda para pagina de adm se for um adm
+        $_SESSION['logado'] = true;
+        $_SESSION['usuario_id'] = $usuario['id'];
+        $_SESSION['usuario_nome'] = $usuario['nome'];
+        $_SESSION['usuario_tipo'] = $usuario['tipo'];
+
+        if ($tipo === "adm") {
+            header("Location: adm_dashboard.php");
+        } else {
+            header("Location: ../index.php");
+        }
+        exit();
     } else {
-        header("Location: ../index.php");//Caso nao, manda para o index do usuario
+        echo "<script>alert('$resultado'); window.history.back();</script>";
     }
-    exit();
 }
+?>

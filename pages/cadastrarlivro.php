@@ -1,9 +1,9 @@
 <?php
-session_start();
-if (!isset($_SESSION['logado'])) {
-    header("Location: login.php");
-    exit();
-}
+include '../includes/conexao.php';
+require_once '../includes/functions.php';
+verificarLogado();
+
+$tema = carregarTema($conn);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -14,7 +14,7 @@ if (!isset($_SESSION['logado'])) {
     <link rel="stylesheet" href="../assets/cadastrarlivro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+<body class="<?php echo $tema; ?>">
 
     <nav class="sidebar">
         <div class="icon-group">

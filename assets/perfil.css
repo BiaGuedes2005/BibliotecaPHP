@@ -1,0 +1,105 @@
+/* Topo do perfil */
+.perfil-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Botão de tema */
+.btn-tema {
+    background: #9686C0;
+    border: none;
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-tema:hover {
+    background: #3A536B;
+    transform: scale(1.1);
+}
+
+/* Card do usuário */
+.perfil-card {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 30px 35px;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.perfil-inicial {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #9686C0;
+    color: white;
+    font-size: 2.2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.perfil-ola {
+    font-size: 1.4rem;
+    color: #3A536B;
+    margin-bottom: 5px;
+}
+
+.perfil-tipo {
+    font-size: 0.9rem;
+    color: #9686C0;
+}
+
+/* ===== MODO ESCURO ===== */
+body.escuro {
+    background-color: #1E1E2E;
+    color: #E0D9F7;
+}
+
+body.escuro .sidebar {
+    background-color: #2A2440;
+}
+
+body.escuro .perfil-card {
+    background: #2A2440;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+body.escuro .perfil-ola {
+    color: #E0D9F7;
+}
+
+body.escuro .card-livro {
+    background: #2A2440;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+body.escuro .titulo-livro {
+    color: #E0D9F7;
+}
+
+body.escuro .books-section h2 {
+    color: #E0D9F7;
+}
+
+body.escuro .msg-vazia {
+    background: #2A2440;
+    color: #E0D9F7;
+}
+
+body.escuro .btn-tema {
+    background: #FAA947;
+}

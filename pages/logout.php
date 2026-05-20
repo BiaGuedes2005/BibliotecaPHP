@@ -1,3 +1,4 @@
+<?php include '../includes/conexao.php'; ?>
 <?php
 session_start(); // Inicia
 session_unset(); // Remove

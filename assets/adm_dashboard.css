@@ -1,76 +1,112 @@
-.admin-content { 
-    margin-left: 70px; 
-    padding: 0;
-    background-color: #fff;
-    
+.adm-section {
+    margin-bottom: 50px;
 }
-.admin-content h2 {
-    font-size: 1.8rem;
-    margin-bottom: 25px;
+
+.adm-titulo {
+    font-size: 1.4rem;
     color: #3A536B;
+    margin-bottom: 20px;
     border-left: 5px solid #F15256;
     padding-left: 15px;
-    font-family: sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
+.tabela-wrapper {
+    background: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
 
-table.excel-table {
+.adm-tabela {
     width: 100%;
-    border-collapse: collapse !important;
-    font-family: Calibri, sans-serif; 
-    border-top: 1px solid #bbb;
-    border-left: 1px solid #bbb;
+    border-collapse: collapse;
 }
 
-
-table.excel-table thead tr:first-child th {
-    background: #e6e6e6 !important;
-    border: 1px solid #bbb !important;
-    text-align: center;
-    color: #666;
-    font-size: 11px;
-    font-weight: normal;
-    height: 20px;
+.adm-tabela thead {
+    background: #9686C0;
 }
 
-
-table.excel-table th {
-    background: #f3f3f3 !important;
-    border: 1px solid #ccc !important;
-    padding: 8px;
-    font-size: 13px;
-    color: #333;
+.adm-tabela thead th {
+    color: white;
+    padding: 15px 20px;
     text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
+.adm-tabela tbody tr {
+    border-bottom: 1px solid #f0eee8;
+    transition: background 0.2s;
+}
 
-.row-number {
-    background: #e6e6e6 !important;
-    border: 1px solid #bbb !important;
+.adm-tabela tbody tr:last-child {
+    border-bottom: none;
+}
+
+.adm-tabela tbody tr:hover {
+    background: #f7f4f0;
+}
+
+.adm-tabela tbody td {
+    padding: 14px 20px;
+    color: #3A536B;
+    font-size: 0.95rem;
+}
+
+.tabela-vazia {
     text-align: center;
-    color: #666;
-    font-size: 11px;
-    width: 30px;
+    padding: 40px !important;
+    color: #9686C0;
 }
 
-
-table.excel-table td {
-    border: 1px solid #d4d4d4 !important;
-    padding: 5px 10px;
-    font-size: 13px;
-    height: 25px;
+.badge-tipo {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
 }
 
-
-table.excel-table tr:hover td {
-    background-color: #f1f1f1 !important;
+.badge-adm {
+    background: #f3effe;
+    color: #7c5cbf;
 }
 
+.badge-usuario {
+    background: #e8f5ee;
+    color: #3a8a5c;
+}
 
-.status-badge {
-    border: 1px solid #217346;
-    color: #217346;
-    padding: 1px 6px;
-    font-size: 11px;
-    background: #e9f5ee;
+/* ===== MODO ESCURO ===== */
+body.escuro .adm-titulo {
+    color: #E0D9F7;
+}
+
+body.escuro .tabela-wrapper {
+    background: #2A2440;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+body.escuro .adm-tabela tbody tr {
+    border-bottom: 1px solid #3d3560;
+}
+
+body.escuro .adm-tabela tbody tr:hover {
+    background: #332b52;
+}
+
+body.escuro .adm-tabela tbody td {
+    color: #E0D9F7;
+}
+
+body.escuro .badge-adm {
+    background: #3d2d6e;
+    color: #c4a8f5;
+}
+
+body.escuro .badge-usuario {
+    background: #1e3d2e;
+    color: #7ecfa0;
 }

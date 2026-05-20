@@ -6,7 +6,6 @@ body {
     min-height: 100vh;
 }
 
-
 .main-wrapper {
     flex: 1;
     margin-left: 100px;
@@ -15,7 +14,6 @@ body {
     flex-direction: column;
     align-items: center; 
 }
-
 
 .top-bar {
     max-width: 950px;
@@ -31,10 +29,13 @@ body {
     font-size: 2rem;
 }
 
-
+/* Ajustado para aceitar tanto o fluxo em linha antigo (Cadastrar) 
+   quanto o fluxo em coluna com os botões embaixo (Editar)
+*/
 .cadastro-container {
     display: flex !important;
-    flex-direction: row !important;
+    flex-direction: row !important; /* Padrão volta a ser lado a lado */
+    flex-wrap: wrap !important;     /* Permite que o container de botões quebre para a linha de baixo se necessário */
     background-color: #ffffff !important; 
     padding: 45px;
     border-radius: 30px;
@@ -45,6 +46,13 @@ body {
     box-sizing: border-box;
 }
 
+/* Mantido para compatibilidade com a reestruturação da tela de Editar */
+.form-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 45px;
+    width: 100%;
+}
 
 .image-upload-section {
     flex: 0 0 240px;
@@ -63,8 +71,6 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-
-    
     background-size: cover;     
     background-position: center;
     background-repeat: no-repeat;
@@ -74,7 +80,6 @@ body {
     font-size: 60px;
     color: #9686C0;
 }
-
 
 .form-fields {
     flex: 1;
@@ -120,28 +125,87 @@ input {
     outline: none;
 }
 
- 
+/* Força o container de botões a ocupar 100% de largura e descer */
 .button-container {
     display: flex;
-    justify-content: flex-start; 
-    margin-left: 10%; 
-    margin-top: 25px;
-    width: 100%;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+    width: 100% !important;
 }
 
-.btn-cadastrar {
-    background-color: #3A536B !important;
-    color: white !important;
+/* Reset estrutural unificado para os botões */
+.btn-cadastrar, .btn-excluir {
+    flex: 1;
+    max-width: 220px;
+    height: 54px;
     border: none;
-    padding: 16px 60px; 
     border-radius: 15px;
     font-weight: bold;
     font-size: 1.1rem;
     cursor: pointer;
     transition: 0.3s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+}
+
+/* Cor individual: Botão Salvar / Cadastrar */
+.btn-cadastrar {
+    background-color: #3A536B !important;
+    color: white !important;
 }
 
 .btn-cadastrar:hover {
-    background-color: #F15256 !important;
+    background-color: #2c3e50 !important;
     transform: translateY(-2px);
+}
+
+/* Cor individual: Botão Excluir */
+.btn-excluir {
+    background-color: #F15256 !important;
+    color: white !important;
+}
+
+.btn-excluir:hover {
+    background-color: #c0392b !important;
+    transform: translateY(-2px);
+}
+
+/* Cor individual: Botão Cancelar */
+.btn-cancelar {
+    background-color: #9686C0 !important;
+    color: white !important;
+}
+
+.btn-cancelar:hover {
+    background-color: #7e6fa3 !important;
+    transform: translateY(-2px);
+}
+
+/* ===== MODO ESCURO ===== */
+body.escuro .titulo-pagina {
+    color: #E0D9F7;
+}
+
+body.escuro .cadastro-container {
+    background-color: #2A2440 !important;
+    box-shadow: 0 10px 45px rgba(0,0,0,0.3);
+}
+
+body.escuro .image-placeholder-container {
+    background-color: #1E1E2E !important;
+    border-color: #9686C0;
+}
+
+body.escuro input {
+    background-color: #1E1E2E !important;
+    color: #E0D9F7 !important;
+}
+
+body.escuro input::placeholder {
+    color: #888 !important;
 }

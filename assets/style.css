@@ -188,3 +188,43 @@ body {
     border-radius: 20px;
     color: #3A536B;
 }
+/* ===== MODO ESCURO ===== */
+body.escuro {
+    background-color: #1E1E2E;
+    color: #E0D9F7;
+}
+
+body.escuro .sidebar {
+    background-color: #2A2440;
+}
+
+body.escuro .card-livro {
+    background: #2A2440;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+body.escuro .titulo-livro {
+    color: #E0D9F7;
+}
+
+body.escuro .books-section h2 {
+    color: #E0D9F7;
+}
+
+body.escuro .msg-vazia {
+    background: #2A2440;
+    color: #E0D9F7;
+}
+
+body.escuro .top-bar {
+    background-color: #1E1E2E;
+}
+
+body.escuro .search-container {
+    background-color: #2A2440;
+    color: #E0D9F7;
+}
+
+body.escuro .search-container input {
+    color: #E0D9F7;
+}

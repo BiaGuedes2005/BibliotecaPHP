@@ -1,35 +1,22 @@
-<?php
-
+<?php 
+// Liga o encanamento com o banco
+include '../includes/conexao.php'; 
 require_once '../includes/functions.php'; 
 
-// Inicia a variavel total
-$total = 0;
+$tema = carregarTema($conn);
+$total = 0; // Maquininha do caixa: começa zerada
 
-// Verifica o "adicionar" na URL do index
+// AÇÃO: Se o usuário clicou em "Adicionar" lá na Prateleira (index.php)
 if (isset($_GET['add'])) {
     $tituloParaAdicionar = $_GET['add'];
-    adicionarAoCarrinho($tituloParaAdicionar);
-    header("Location: carrinho.php");
+    adicionarAoCarrinho($tituloParaAdicionar); // Joga o livro dentro da Cesta
+    header("Location: carrinho.php"); // Atualiza a Cesta
     exit();
 }
 
-//Limpar Carrinho
+// AÇÃO: Se o usuário clicou em "Esvaziar Carrinho"
 if (isset($_GET['limpar'])) {
-    $_SESSION['carrinho'] = [];
-    header("Location: carrinho.php");
-    exit();
-}
-
-//remove o livro especifico 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_remover'])) {
-    $id = $_POST['id_remover'];
-    
-    if (isset($_SESSION['carrinho'][$id])) {
-        unset($_SESSION['carrinho'][$id]);
-        // Reorganiza os indices do array para nao quebrar o loop
-        $_SESSION['carrinho'] = array_values($_SESSION['carrinho']);
-    }
-    
+    $_SESSION['carrinho'] = []; // Limpa esse espaço da Mochila
     header("Location: carrinho.php");
     exit();
 }
@@ -43,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_remover'])) {
     <link rel="stylesheet" href="../assets/carrinho.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+<body class="<?php echo $tema; ?>">
 
     <nav class="sidebar">
         <div class="icon-group">
@@ -127,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_remover'])) {
 
             <div class="total-section">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <span style="font-weight: bold; color: #333;">Total:</span>
+                    <span class="total-label">Total:</span>
                     <span style="font-size: 1.8rem; font-weight: bold; color: #2ecc71;">
                         R$ <?php echo number_format($total, 2, ',', '.'); ?>
                     </span>
@@ -145,6 +132,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_remover'])) {
             </div>
         </form>
     </aside>
+<script>
+    function alternarTema() {
+    const temaAtual = document.body.classList.contains('dark') ? 'escuro' : 'claro';
+    const novoTema = temaAtual === 'escuro' ? 'claro' : 'escuro';
 
+    fetch('pages/salvar_tema.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'tema=' + novoTema
+    }).then(() => {
+        document.body.classList.toggle('dark');
+        const icone = document.getElementById('icone-tema');
+        if (icone) {
+            icone.classList.toggle('fa-moon');
+            icone.classList.toggle('fa-sun');
+        }
+    });
+}
+</script>
 </body>
 </html>

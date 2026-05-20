@@ -98,3 +98,21 @@ function mostrarPlanilha(tipo, dadosUsuarios, dadosProdutos) {
         tableWidth: '100%',
     });
 }
+
+    function alternarTema() {
+    const temaAtual = document.body.classList.contains('dark') ? 'escuro' : 'claro';
+    const novoTema = temaAtual === 'escuro' ? 'claro' : 'escuro';
+
+    fetch('pages/salvar_tema.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'tema=' + novoTema
+    }).then(() => {
+        document.body.classList.toggle('dark');
+        const icone = document.getElementById('icone-tema');
+        if (icone) {
+            icone.classList.toggle('fa-moon');
+            icone.classList.toggle('fa-sun');
+        }
+    });
+}
