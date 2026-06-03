@@ -76,6 +76,7 @@ function cadastrarUsuario($nome, $senha, $tipo) {
 function verificarSenhaAdm($senhaDigitada) {
     return $senhaDigitada === "PROJETO2026";
 }
+
 function adicionarAoCarrinho($titulo) {
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM livros WHERE titulo = ?");
@@ -97,7 +98,9 @@ function adicionarAoCarrinho($titulo) {
     }
     return false;
 }
-function carregarTema($conn) {
+
+// CORRIGIDO: Removido o parâmetro duplicado para não dar erro no Windows
+function carregarTema() {
     global $conn;
     if (!isset($_SESSION['tema']) && isset($_SESSION['usuario_id'])) {
         $stmt = $conn->prepare("SELECT tema FROM usuarios WHERE id = ?");
