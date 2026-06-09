@@ -1,21 +1,40 @@
 <?php
+/**
+ * ARQUIVO: PAINEL ADMINISTRATIVO (DASHBOARD)
+ * Papel: A Sala da Diretoria e o Painel Geral de Controle
+ */
+
+// A COLA 
 include '../includes/conexao.php';
+
+// AS FUNÇÕES DA BIBLIOTECA
 require_once '../includes/functions.php';
+
+// O SEGURANÇA DA PORTA
 verificarLogado();
+
+// --- BARREIRA DE PATENTE ---
 
 if ($_SESSION['usuario_tipo'] !== 'adm') {
     header("Location: ../index.php");
     exit();
 }
 
+// O INTERRUPTOR 1
 $tema = carregarTema($conn);
+
+// IDENTIFICAÇÃO DO DIRETOR
 $usuario_nome = $_SESSION['usuario_nome'];
+
+// EMBLEMA EM INICIAL
 $inicial = strtoupper(mb_substr($usuario_nome, 0, 1));
 
-// Busca todos os usuários ativos
+// --- CONSULTA DA PASTA 1 ---
+
 $usuarios = $conn->query("SELECT id, nome, tipo, created_at FROM usuarios WHERE excluido_adm = 0 ORDER BY created_at DESC");
 
-// Busca todos os livros ativos com nome do dono
+// --- CONSULTA DA PASTA 2---
+
 $livros = $conn->query("SELECT livros.id, livros.titulo, livros.autor, livros.categoria, livros.valor, usuarios.nome AS cadastrado_por FROM livros JOIN usuarios ON livros.usuario_id = usuarios.id WHERE livros.excluido_adm = 0 ORDER BY livros.created_at DESC");
 ?>
 <!DOCTYPE html>
@@ -28,6 +47,7 @@ $livros = $conn->query("SELECT livros.id, livros.titulo, livros.autor, livros.ca
     <link rel="stylesheet" href="../assets/adm_dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body class="<?php echo $tema; ?>">
 
     <nav class="sidebar">
@@ -43,12 +63,12 @@ $livros = $conn->query("SELECT livros.id, livros.titulo, livros.autor, livros.ca
 
     <main class="content">
         <header class="top-bar perfil-topbar">
-<h1 class="titulo-pagina" style="border-left: 5px solid #F15256; padding-left: 15px; line-height: 1.2;">Painel do Administrador</h1>            <button class="btn-tema" id="btnTema" onclick="alternarTema()">
+            <h1 class="titulo-pagina" style="border-left: 5px solid #F15256; padding-left: 15px; line-height: 1.2;">Painel do Administrador</h1>            
+            <button class="btn-tema" id="btnTema" onclick="alternarTema()">
                 <i class="fas <?php echo $tema === 'escuro' ? 'fa-sun' : 'fa-moon'; ?>" id="icone-tema"></i>
             </button>
         </header>
 
-        <!-- Card do adm -->
         <div class="perfil-card">
             <div class="perfil-inicial"><?php echo $inicial; ?></div>
             <div class="perfil-info">
@@ -57,7 +77,6 @@ $livros = $conn->query("SELECT livros.id, livros.titulo, livros.autor, livros.ca
             </div>
         </div>
 
-        <!-- Tabela de Livros -->
         <section class="adm-section" id="livros">
             <h2 class="adm-titulo"><i class="fas fa-book"></i> Livros Cadastrados</h2>
             <div class="tabela-wrapper">
@@ -103,7 +122,6 @@ $livros = $conn->query("SELECT livros.id, livros.titulo, livros.autor, livros.ca
             </div>
         </section>
 
-        <!-- Tabela de Usuários -->
         <section class="adm-section" id="usuarios">
             <h2 class="adm-titulo"><i class="fas fa-users"></i> Usuários Cadastrados</h2>
             <div class="tabela-wrapper">
@@ -167,13 +185,15 @@ $livros = $conn->query("SELECT livros.id, livros.titulo, livros.autor, livros.ca
             const temaAtual = document.body.classList.contains('escuro') ? 'escuro' : 'claro';
             const novoTema = temaAtual === 'escuro' ? 'claro' : 'escuro';
 
+            // ENVIO ASSÍNCRONO
             fetch('salvar_tema.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'tema=' + novoTema
-            }).then(() => aplicarTema(novoTema));
+            }).then(() => aplicarTema(novoTema)); 
         }
 
+        // START INICIAL
         aplicarTema('<?php echo $tema; ?>');
     </script>
 </body>

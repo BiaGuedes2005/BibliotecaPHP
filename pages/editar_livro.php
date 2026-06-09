@@ -1,34 +1,48 @@
 <?php
+/**
+ * ARQUIVO: EDITAR LIVRO
+ * Papel: Oficina de Restauro e Atualização do Livro
+ */
+
+// A COLA 
 include '../includes/conexao.php';
+
+// AS FUNÇÕES DA BIBLIOTECA
 require_once '../includes/functions.php';
+
+// O SEGURANÇA DA PORTA
 verificarLogado();
 
+// O INTERRUPTOR 1
 $tema = carregarTema($conn);
 
-// Verifica se o ID foi passado
+// CONTROLE DE ENTRADA DA OFICINA
 if (!isset($_GET['id'])) {
     header("Location: perfil.php");
     exit();
 }
 
+// CONVERSÃO DE SEGURANÇA
 $id = (int)$_GET['id'];
-$usuario_id = $_SESSION['usuario_id'];
+$usuario_id = $_SESSION['usuario_id']; 
 
-// Busca o livro e garante que pertence ao usuário logado
+// --- SEGURANÇA EXTREMA (CHECAGEM DE PROPRIEDADE) ---
 $stmt = $conn->prepare("SELECT * FROM livros WHERE id = ? AND usuario_id = ?");
 $stmt->bind_param("ii", $id, $usuario_id);
 $stmt->execute();
 $resultado = $stmt->get_result();
-$livro = $resultado->fetch_assoc();
+$livro = $resultado->fetch_assoc(); 
 
-// Se não encontrou ou não é dono, manda para o perfil
+// SEGUNDA TRAVA DE SEGURANÇA
 if (!$livro) {
     header("Location: perfil.php");
     exit();
 }
 
-// Processa o formulário de edição
+// O PROCESSO DE REFORMA (ENVIO DO FORMULÁRIO)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    // MÁSCARA DE GÁS
     $titulo    = trim($_POST['titulo']);
     $autor     = trim($_POST['autor']);
     $editora   = trim($_POST['editora']);
@@ -39,13 +53,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $valor     = trim($_POST['valor']);
     $img_url   = trim($_POST['img_url']);
 
+    // MANDANDO AS ATUALIZAÇÕES PARA A CAIXA (UPDATE):
     $stmt = $conn->prepare("UPDATE livros SET titulo=?, autor=?, editora=?, ano=?, categoria=?, sobre=?, descricao=?, valor=?, img_url=? WHERE id=? AND usuario_id=?");
+    
+    // CARIMBANDO OS DADOS COM OS TIPOS
+    
     $stmt->bind_param("sssississii", $titulo, $autor, $editora, $ano, $categoria, $sobre, $descricao, $valor, $img_url, $id, $usuario_id);
 
+    // EXECUTANDO A ATUALIZAÇÃO NO BANCO
     if ($stmt->execute()) {
         header("Location: perfil.php");
         exit();
     } else {
+        // ALERTA DE REJEIÇÃO
         $erro = "Erro ao salvar. Tente novamente.";
     }
 }
@@ -55,10 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Editar Livro</title>
-    <link rel="stylesheet" href="../assets/style.css">
+    <link class="luz" rel="stylesheet" href="../assets/style.css">
     <link rel="stylesheet" href="../assets/cadastrarlivro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
+<!-- O INTERRUPTOR 2 -->
 <body class="<?php echo $tema; ?>">
 
     <nav class="sidebar">
@@ -80,10 +102,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p style="color:red; padding: 0 40px;"><?php echo $erro; ?></p>
         <?php endif; ?>
 
+        <!-- FORMULÁRIO DE EXIBIÇÃO"<?php echo htmlspecialchars($livro['...']); ?>" -->
         <form action="editar_livro.php?id=<?php echo $id; ?>" method="POST" class="cadastro-container">
 
             <div class="form-content-wrapper">
                 
+                <!-- PREVIEW DA IMAGEM -->
                 <div class="image-upload-section">
                     <label for="img_url">URL da Capa</label>
                     <div class="image-placeholder-container" id="preview-container">
@@ -96,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" id="img_url" name="img_url" oninput="previewImage()" placeholder="Cole a URL aqui..." value="<?php echo htmlspecialchars($livro['img_url']); ?>">
                 </div>
 
+                <!-- DEMAIS DADOS DA EMBALAGEM -->
                 <div class="form-fields">
                     <div class="input-full">
                         <label>Título do Livro</label>
@@ -141,7 +166,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
 
-            </div> <div class="button-container">
+            </div> 
+            
+            <div class="button-container">
+                <!-- ACCIONANDO O TRITURADOR EXTERNO-->
                 <a href="excluir_livro.php?id=<?php echo $id; ?>" 
                    class="btn-excluir"
                    onclick="return confirm('Tem certeza que deseja excluir este livro?')">

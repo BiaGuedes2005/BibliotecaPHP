@@ -1,4 +1,12 @@
-<?php include '../includes/conexao.php'; ?>
+<?php 
+/**
+ * ARQUIVO: CADASTRAR PERFIL
+ * Papel: Formulário de Inscrição e Alçapão Escondido (Interface)
+ */
+
+// A COLA 
+include '../includes/conexao.php'; 
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -12,6 +20,7 @@
             <h1>PRIMEIRA VEZ?</h1>
             
             <form action="processacadastro.php" method="POST">
+                
                 <div class="input-group">
                     <label for="nome">NOME</label>
                     <input type="text" id="nome" name="nome" required>

@@ -1,9 +1,17 @@
 <?php
+/**
+ * ARQUIVO: FUNÇÕES GERAIS DO SISTEMA
+ * Papel: O Manual de Regras, Protocolos e Ferramentas Coletivas
+ */
+
+// O ACIONADOR DE MOCHILAS (Sessão):
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Verifica se está logado, se não redireciona
+// 1. O PORTAL DE SEGURANÇA:
+
 function verificarLogado() {
     if (!isset($_SESSION['logado'])) {
         header("Location: login.php");
@@ -11,17 +19,19 @@ function verificarLogado() {
     }
 }
 
-// Valida se campos estão vazios
+// 2. O DETECTOR DE ESPAÇOS EM BRANCO:
+
 function validarCampos($dados) {
     foreach ($dados as $campo => $valor) {
         if (empty(trim($valor))) {
-            return false;
+            return false; 
         }
     }
-    return true;
+    return true; 
 }
 
-// Calcula total do carrinho
+// 3. A MAQUININHA DE CALCULAR DO CAIXA:
+
 function calcularTotalCarrinho() {
     $total = 0;
     if (isset($_SESSION['carrinho'])) {
@@ -34,37 +44,46 @@ function calcularTotalCarrinho() {
     return $total;
 }
 
-// Faz o login consultando o banco
+// 4. O VALIDADOR DE CREDENCIAIS (LOGIN):
+
 function fazerLogin($nome, $senha) {
-    global $conn;
+    global $conn; // Puxa o encanamento do banco para dentro da função
     $stmt = $conn->prepare("SELECT * FROM usuarios WHERE nome = ?");
     $stmt->bind_param("s", $nome);
     $stmt->execute();
     $resultado = $stmt->get_result();
     $usuario = $resultado->fetch_assoc();
 
+    // Compara a senha digitada com o hash ultra seguro salvo no cofre
     if ($usuario && password_verify($senha, $usuario['senha'])) {
+        // Preenche a mochila do usuário com seus dados de identificação
         $_SESSION['logado'] = true;
         $_SESSION['usuario_id'] = $usuario['id'];
         $_SESSION['usuario_nome'] = $usuario['nome'];
         $_SESSION['usuario_tipo'] = $usuario['tipo'];
         return true;
     }
-    return false;
+    return false; 
 }
 
-// Cadastra novo usuário no banco
+// 5. O ESCREVENTE DE NOVOS MEMBROS (CADASTRO):
+
 function cadastrarUsuario($nome, $senha, $tipo) {
     global $conn;
+    
+    // Verifica duplicidade
     $stmt = $conn->prepare("SELECT id FROM usuarios WHERE nome = ?");
     $stmt->bind_param("s", $nome);
     $stmt->execute();
     $resultado = $stmt->get_result();
     if ($resultado->num_rows > 0) {
-        return "Nome já cadastrado.";
+        return "Nome já cadastrado."; // Nome indisponível
     }
 
+    // Cria o escudo de criptografia na senha
     $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+    
+    // Grava a nova ficha no cofre do banco
     $stmt = $conn->prepare("INSERT INTO usuarios (nome, senha, tipo) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $nome, $senhaHash, $tipo);
     if ($stmt->execute()) {
@@ -73,9 +92,13 @@ function cadastrarUsuario($nome, $senha, $tipo) {
     return "Erro ao cadastrar. Tente novamente.";
 }
 
+// 6. A PALAVRA-PASSE DA DIRETORIA:
+
 function verificarSenhaAdm($senhaDigitada) {
     return $senhaDigitada === "PROJETO2026";
 }
+
+// 7. O INSERSOR DE ITENS NA CESTA:
 
 function adicionarAoCarrinho($titulo) {
     global $conn;
@@ -99,9 +122,9 @@ function adicionarAoCarrinho($titulo) {
     return false;
 }
 
-// CORRIGIDO: Removido o parâmetro duplicado para não dar erro no Windows
-function carregarTema() {
-    global $conn;
+// 8. O MEMORIZADOR DE AMBIENTE (TEMA):
+
+function carregarTema($conn) {
     if (!isset($_SESSION['tema']) && isset($_SESSION['usuario_id'])) {
         $stmt = $conn->prepare("SELECT tema FROM usuarios WHERE id = ?");
         $stmt->bind_param("i", $_SESSION['usuario_id']);

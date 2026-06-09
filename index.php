@@ -1,79 +1,78 @@
-<?php include 'includes/conexao.php'; ?>
 <?php
+/**
+ * ARQUIVO: ÍNDEX / PRATELEIRA
+ * Projeto: BibliotecaPHP
+ */
+
+// INICIALIZAÇÃO E Cola
+include 'includes/conexao.php'; 
 require_once 'includes/functions.php';
-$tema = carregarTema($conn);
+
+// MOTOR DO COOKIE 
+if (isset($_GET['definir_cookie'])) {
+    $decisao = $_GET['definir_cookie'];
+    
+    if ($decisao === 'sim') {
+        // Define o cookie por 30 dias
+        setcookie('aceitou_cookies', 'sim', time() + 2592000, '/');
+    } else {
+        // Define o cookie apenas para a sessão atual
+        setcookie('aceitou_cookies', 'nao', 0, '/');
+    }
+    
+    // Recarrega a página limpando
+    header("Location: index.php");
+    exit();
+}
+
+// SEGURANÇA DA PORTA
 if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
     header("Location: pages/login.php");
     exit();
 }
-?>
 
+//INTERRUPTOR
+$tema = carregarTema($conn);
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Livraria da Bia</title>
+    <title>Livraria</title>
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<div id="lofi-player" style="
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 280px;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    z-index: 999;
-    border: 4px solid #FAA947; /* <--- A SUA BORDA AQUI */
-">
-    <iframe 
-        width="280" 
-        height="157" 
-        src="https://www.youtube.com/embed/CFGLoQIhmow?autoplay=1&mute=1"
-        title="Lofi Music"
-        frameborder="0" 
-        allow="autoplay; encrypted-media" 
-        allowfullscreen>
-    </iframe>
-</div>
 <body class="<?php echo $tema; ?>">
 
-<?php if (isset($_SESSION['sucesso_compra'])): ?>
-    <div id="alerta-compra" style="
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #2ecc71;
-        color: white;
-        padding: 16px 40px 16px 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        z-index: 1000;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    ">
+<div id="lofi-player" style="position: fixed; bottom: 30px; right: 30px; width: 280px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 999; border: 4px solid #FAA947;">
+    <iframe width="280" height="157" src="https://www.youtube.com/embed/CFGLoQIhmow?autoplay=1&mute=1" title="Lofi Music" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+<?php if (!isset($_COOKIE['aceitou_cookies'])): ?>
+<div id="box-cookies" class="cookie-container" style="display: flex;">
+    <div class="cookie-conteudo">
+        <i class="fas fa-cookie-bite" style="color: #F15256; font-size: 1.5rem; margin-right: 10px;"></i>
+        <p>Olá! Notamos que esta é uma nova conta ou um novo acesso. Aceita nossa política de cookies?</p>
+    </div>
+    <div class="cookie-botoes">
+        <a href="?definir_cookie=nao" class="btn-cookie btn-recusar" onclick="fecharBannerNaTela(event)">Não</a>
+        <a href="?definir_cookie=sim" class="btn-cookie btn-aceitar" onclick="fecharBannerNaTela(event)">Sim, aceito</a>
+    </div>
+</div>
+<?php endif; ?>
+
+<?php 
+// O RECIBO DA COMPRA
+if (isset($_SESSION['sucesso_compra'])): 
+?>
+    <div id="alerta-compra" style="position: fixed; top: 20px; right: 20px; background: #2ecc71; color: white; padding: 16px 40px 16px 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; font-weight: 500; display: flex; align-items: center; gap: 10px;">
         <i class="fas fa-check-circle" style="font-size: 1.3rem;"></i>
         <span><?php echo $_SESSION['sucesso_compra']; ?></span>
-        
-        <button onclick="this.parentElement.style.display='none'" style="
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.1rem;
-            cursor: pointer;
-            margin-left: 15px;
-            opacity: 0.8;
-        " onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+        <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer; margin-left: 15px; opacity: 0.8;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
             <i class="fas fa-times"></i>
         </button>
     </div>
-    <?php 
-    // CRÍTICO: Limpa a mensagem da sessão para ela não aparecer de novo ao atualizar a index!
-    unset($_SESSION['sucesso_compra']); 
-    ?>
+    <?php unset($_SESSION['sucesso_compra']); ?>
 <?php endif; ?>
 
     <nav class="sidebar">
@@ -103,6 +102,7 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
             <div class="livros-grid">
                 <?php
                 $resultado = $conn->query("SELECT * FROM livros ORDER BY created_at DESC");
+                
                 if ($resultado && $resultado->num_rows > 0) {
                     while ($livro = $resultado->fetch_assoc()) {
                 ?>
@@ -127,39 +127,25 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
         </section>
     </main>
 
-<script>
+    <script src="assets/script.js"></script>
+
+    <script>
+        // MECANISMO DE BUSCA EM TEMPO REAL
         const inputPesquisa = document.getElementById('inputPesquisa');
-        inputPesquisa.addEventListener('keyup', function() {
-            let busca = inputPesquisa.value.toLowerCase();
-            let cards = document.querySelectorAll('.card-livro');
-            cards.forEach(card => {
-                let titulo = card.querySelector('.titulo-livro').innerText.toLowerCase();
-                if (titulo.includes(busca)) {
-                    card.style.display = "flex";
-                } else {
-                    card.style.display = "none";
-                }
+        if(inputPesquisa) {
+            inputPesquisa.addEventListener('keyup', function() {
+                let busca = inputPesquisa.value.toLowerCase();
+                let cards = document.querySelectorAll('.card-livro');
+                cards.forEach(card => {
+                    let titulo = card.querySelector('.titulo-livro').innerText.toLowerCase();
+                    if (titulo.includes(busca)) {
+                        card.style.display = "flex";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
             });
-        });
-        
-    function alternarTema() {
-    const temaAtual = document.body.classList.contains('dark') ? 'escuro' : 'claro';
-    const novoTema = temaAtual === 'escuro' ? 'claro' : 'escuro';
-
-    fetch('pages/salvar_tema.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'tema=' + novoTema
-    }).then(() => {
-        document.body.classList.toggle('dark');
-        const icone = document.getElementById('icone-tema');
-        if (icone) {
-            icone.classList.toggle('fa-moon');
-            icone.classList.toggle('fa-sun');
         }
-    });
-}
-
     </script>
 </body>
 </html>

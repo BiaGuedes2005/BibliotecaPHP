@@ -1,23 +1,43 @@
 <?php 
-// Liga o encanamento com o banco
+/**
+ * ARQUIVO: CARRINHO
+ * Papel: A Cesta de Compras e a Calculadora do Caixa
+ */
+
+// A COLA
 include '../includes/conexao.php'; 
+// AS FUNÇÕES DA BIBLIOTECA
 require_once '../includes/functions.php'; 
 
+// O INTERRUPTOR 1
 $tema = carregarTema($conn);
-$total = 0; // Maquininha do caixa: começa zerada
 
-// AÇÃO: Se o usuário clicou em "Adicionar" lá na Prateleira (index.php)
-if (isset($_GET['add'])) {
-    $tituloParaAdicionar = $_GET['add'];
-    adicionarAoCarrinho($tituloParaAdicionar); // Joga o livro dentro da Cesta
-    header("Location: carrinho.php"); // Atualiza a Cesta
+// MAQUININHA DO CAIXA
+$total = 0; 
+
+// --- AÇÃO 1: DEVOLVER LIVRO DA CESTA (POST) ---
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_remover'])) {
+    $chave = $_POST['id_remover']; 
+    if (isset($_SESSION['carrinho'][$chave])) {
+        unset($_SESSION['carrinho'][$chave]); 
+    }
+    header("Location: carrinho.php"); 
     exit();
 }
 
-// AÇÃO: Se o usuário clicou em "Esvaziar Carrinho"
+// --- AÇÃO 2: COLOCAR LIVRO NA CESTA (GET) ---
+if (isset($_GET['add'])) {
+    $tituloParaAdicionar = $_GET['add'];
+    adicionarAoCarrinho($tituloParaAdicionar); 
+    header("Location: carrinho.php"); 
+    exit();
+}
+
+// --- AÇÃO 3: CHUTAR A BALDE (LIMPAR TUDO) ---
 if (isset($_GET['limpar'])) {
-    $_SESSION['carrinho'] = []; // Limpa esse espaço da Mochila
-    header("Location: carrinho.php");
+    $_SESSION['carrinho'] = []; 
+    header("Location: carrinho.php"); 
     exit();
 }
 ?>
@@ -30,6 +50,7 @@ if (isset($_GET['limpar'])) {
     <link rel="stylesheet" href="../assets/carrinho.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body class="<?php echo $tema; ?>">
 
     <nav class="sidebar">
@@ -49,15 +70,18 @@ if (isset($_GET['limpar'])) {
 
         <div class="itens-lista">
             <?php 
+            // O FUNCIONÁRIO DO CAIXA
             if (isset($_SESSION['carrinho']) && !empty($_SESSION['carrinho'])) {
                 
+                // O LOOPER DA CESTA (foreach)
                 foreach ($_SESSION['carrinho'] as $chave => $item) {
                     
-                    
+                    // TRATAMENTO MATEMÁTICO
                     $valorLimpo = str_replace(['R$', ' ', '.'], '', $item['valor']);
+                    
                     $valorNumerico = (float)str_replace(',', '.', $valorLimpo);
                     
-                    
+                    // CALCULADORA EM AÇÃO
                     $total += $valorNumerico;
                     ?>
                     
@@ -132,24 +156,26 @@ if (isset($_GET['limpar'])) {
             </div>
         </form>
     </aside>
-<script>
-    function alternarTema() {
-    const temaAtual = document.body.classList.contains('dark') ? 'escuro' : 'claro';
-    const novoTema = temaAtual === 'escuro' ? 'claro' : 'escuro';
 
-    fetch('pages/salvar_tema.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'tema=' + novoTema
-    }).then(() => {
-        document.body.classList.toggle('dark');
-        const icone = document.getElementById('icone-tema');
-        if (icone) {
-            icone.classList.toggle('fa-moon');
-            icone.classList.toggle('fa-sun');
-        }
-    });
-}
+<script>
+    // O INTERRUPTOR (JavaScript)
+    function alternarTema() {
+        const temaAtual = document.body.classList.contains('dark') ? 'escuro' : 'claro';
+        const novoTema = temaAtual === 'escuro' ? 'claro' : 'escuro';
+
+        fetch('pages/salvar_tema.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'tema=' + novoTema
+        }).then(() => {
+            document.body.classList.toggle('dark');
+            const icone = document.getElementById('icone-tema');
+            if (icone) {
+                icone.classList.toggle('fa-moon');
+                icone.classList.toggle('fa-sun');
+            }
+        });
+    }
 </script>
 </body>
 </html>

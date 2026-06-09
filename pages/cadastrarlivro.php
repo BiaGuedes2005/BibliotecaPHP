@@ -1,8 +1,19 @@
 <?php
+/**
+ * ARQUIVO: CADASTRAR LIVRO
+ * Papel: Ficha de Cadastro de Novas Obras (Interface)
+ */
+
+// A COLA 
 include '../includes/conexao.php';
+
+// AS FUNÇÕES DA BIBLIOTECA
 require_once '../includes/functions.php';
+
+// O SEGURANÇA DA PORTA
 verificarLogado();
 
+// O INTERRUPTOR 1
 $tema = carregarTema($conn);
 ?>
 <!DOCTYPE html>
@@ -14,6 +25,7 @@ $tema = carregarTema($conn);
     <link rel="stylesheet" href="../assets/cadastrarlivro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body class="<?php echo $tema; ?>">
 
     <nav class="sidebar">
@@ -36,11 +48,10 @@ $tema = carregarTema($conn);
             <div class="image-upload-section">
                 <label for="img_url">URL da Capa</label>
                 <div class="image-placeholder-container" id="preview-container">
-                <i class="fas fa-camera" id="camera-icon"></i>
-            </div>
+                    <i class="fas fa-camera" id="camera-icon"></i>
+                </div>
 
-            <input type="text" id="img_url" name="img_url" oninput="previewImage()" placeholder="Cole a URL aqui...">
-                
+                <input type="text" id="img_url" name="img_url" oninput="previewImage()" placeholder="Cole a URL aqui...">
             </div>
 
             <div class="form-fields">

@@ -228,3 +228,71 @@ body.escuro .search-container {
 body.escuro .search-container input {
     color: #E0D9F7;
 }
+/* ESTILIZAÇÃO DO POPUP DE COOKIES */
+.cookie-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    z-index: 9999;
+    width: 90%;
+    max-width: 700px;
+}
+
+/* Ajuste automático para o modo escuro que você já tem */
+body.escuro .cookie-container {
+    background-color: #2c2c2c;
+    color: #ffffff;
+    box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.4);
+}
+
+.cookie-conteudo {
+    display: flex;
+    align-items: center;
+}
+
+.cookie-conteudo p {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.cookie-botoes {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-cookie {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.85rem;
+    transition: 0.2s;
+}
+
+.btn-aceitar {
+    background-color: #F15256;
+    color: white;
+}
+
+.btn-aceitar:hover {
+    background-color: #d44145;
+}
+
+.btn-recusar {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.btn-recusar:hover {
+    background-color: #cccccc;
+}

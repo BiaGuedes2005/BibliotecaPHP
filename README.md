@@ -1,9 +1,7 @@
-# Biblioteca-PHP
-# Biblioteca-PHP
+# 📚 Biblioteca Online - Sistema de Gerenciamento Back-end
 
-# 📚 Biblioteca Online - Sistema de Gerenciamento
+Este projeto é um sistema de biblioteca web dinâmico desenvolvido como parte dos critérios de avaliação da disciplina de Análise e Desenvolvimento de Sistemas. A aplicação implementa um fluxo completo de autenticação, gerenciamento de acervo (CRUD) e carrinho de compras, utilizando **PHP (com arquitetura orientada a objetos na extensão MySQLi)**, **JavaScript nativo** e persistência em **Banco de Dados Relacional (MySQL)**.
 
-Este projeto é um sistema de biblioteca web desenvolvido como parte da disciplina de Análise e Desenvolvimento de Sistemas. O sistema permite o cadastro de usuários, login, gerenciamento de acervo e um fluxo completo de carrinho de compras, utilizando **PHP** e **JavaScript** com persistência em **Sessões (Sessions)**.
 ---
 
 ## 👩‍💻 Autoras
@@ -11,60 +9,73 @@ Este projeto é um sistema de biblioteca web desenvolvido como parte da discipli
 - **Maria Beatriz**
 
 ---
+
 ## 🚀 Funcionalidades Principais
 
-### 👤 Gestão de Usuários
-- **Cadastro e Login:** Sistema de autenticação com diferenciação entre usuários comuns e administradores.
-- **Segurança de Acesso:** Páginas protegidas que redirecionam o usuário para o login caso não esteja autenticado.
+### 👤 Gestão de Usuários e Segurança
+- **Autenticação e Níveis de Acesso:** Sistema de login com diferenciação estrita de privilégios entre usuários comuns e administradores (RBAC).
+- **Controle de Sessão Seguro:** Páginas restritas protegidas por variáveis de sessão (`$_SESSION`), impedindo o acesso via URL por usuários não autenticados.
 
-### 📖 Catálogo de Livros
-- **Vitrine Dinâmica:** Listagem de livros disponíveis com opção de adicionar ao carrinho.
-- **Cadastro de Livros:** Interface para adicionar novos títulos ao acervo (armazenados em array de sessão).
+### 📖 Catálogo Dinâmico de Livros
+- **Vitrine em Tempo Real:** Renderização automática dos cards de livros cadastrados no banco de dados, ordenados por relevância e novidades.
+- **Mecanismo de Busca Client-Side:** Filtro instantâneo de títulos por meio de JavaScript assíncrono no Front-end.
 
 ### 🛒 Carrinho de Compras
-- **Fluxo Completo:** Adicionar itens, visualizar o total acumulado e remover itens específicos.
-- **Cálculo em Tempo Real:** Funções PHP que processam os valores monetários para exibir o total da compra.
-- **Remoção via POST:** Implementação de exclusão segura utilizando o método POST conforme exigência acadêmica.
+- **Persistência de Estado:** Armazenamento volátil dos itens selecionados utilizando vetores de sessão.
+- **Processamento Monetário:** Funções back-end em PHP para cálculo acumulado do total da compra.
+- **Exclusão Segura:** Implementação do fluxo de remoção de itens utilizando o método HTTP `POST`, mitigando vulnerabilidades de requisições indevidas.
 
-### 🛠️ Painel Administrativo
-- **Relatório Executivo:** Cards dinâmicos com contagem total de livros e usuários.
-- **Tabela Interativa:** Utilização da biblioteca **JSpreadsheet** para gerenciar dados em formato de planilha diretamente no navegador.
+### 🛠️ Painel Administrativo (Dashboard)
+- **Relatórios Dinâmicos:** Cards informativos baseados em queries agregadas de contagem (`COUNT`) no MySQL.
+- **Tabela Interativa Interconectada:** Integração com a biblioteca **JSpreadsheet** para visualização e manipulação ágil de dados estruturados.
+
+### 🍪 Conformidade e UX
+- **Termo de Consentimento (LGPD):** Banner dinâmico para aceite de políticas de privacidade, gerenciado via manipulação de `$_COOKIE` no servidor e alertas informativos em JavaScript.
+- **Player de Mídia Integrado:** Widget fixo com transmissão de música ambiente (Lofi) para enriquecer a experiência do usuário.
 
 ---
 
 ## 📋 Requisitos Técnicos Implementados (Critérios de Avaliação)
 
-De acordo com as exigências da disciplina, o projeto contém:
+De acordo com as exigências acadêmicas da disciplina, o projeto cobre com sucesso os seguintes tópicos:
 
-- [x] **Variáveis e Operadores:** Cálculos de totais e manipulação de dados de preço.
-- [x] **Estruturas de Decisão:** `if/else` para controle de acesso, validação de login e permissões de ADM.
-- [x] **Estruturas de Repetição:** `foreach` para percorrer vetores e listar livros/usuários.
-- [x] **Funções PHP:** Centralizadas no `functions.php` para cálculos de total e validação de campos.
-- [x] **Métodos GET e POST:** - `POST` para envio de formulários e **exclusão de itens** no carrinho.
-    - `GET` para adicionar itens e navegação simples.
-- [x] **Vetores (Arrays):** Armazenamento de dados estruturados em `$_SESSION`.
-- [x] **Include/Require:** Organização modular do código.
-- [x] **Página com Tabela:** Implementação avançada no Dashboard Administrativo.
-- [x] **Validação de Formulários:** Checagem de campos obrigatórios no servidor.
+- [x] **Variáveis, Operadores e Tipagem:** Manipulação de dados financeiros e strings.
+- [x] **Estruturas de Decisão (`if/else`):** Controle de fluxo de autenticação, checagem de cookies e permissões.
+- [x] **Estruturas de Repetição (`while` / `foreach`):** Laços para iteração de arrays de dados e ponteiros de resultados do banco.
+- [x] **Modularização (`include` / `require_once`):** Organização do ecossistema dividindo conexões, funções globais e cabeçalhos.
+- [x] **Funções Personalizadas:** Encapsulamento de regras de negócio em arquivos isolados (`functions.php`).
+- [x] **Persistência em Banco de Dados (MySQL):** Modelagem e persistência real de dados de usuários e livros.
+- [x] **Segurança da Informação:** Uso de **Prepared Statements (`$stmt->bind_param`)** para prevenção contra ataques de *SQL Injection*.
+- [x] **Métodos HTTP (GET e POST):** - `POST` para tráfego seguro de credenciais, cadastros e remoções.
+  - `GET` para requisições de navegação e passagem de parâmetros simples.
+- [x] **Gerenciamento de Estado (`$_SESSION` e `$_COOKIE`):** Manutenção de login ativo e persistência da escolha de cookies da LGPD por 30 dias.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **PHP 8.x**: Lógica de back-end e gerenciamento de sessões.
-- **HTML5 & CSS3**: Estrutura e estilização (Layout moderno com Sidebar).
-- **JavaScript**: Lógica de interface e integração com a planilha JSpreadsheet.
-- **JSpreadsheet (v4)**: Biblioteca de planilha de dados.
-- **Font Awesome**: Ícones de interface.
+- **PHP 8.x**: Linguagem de programação server-side.
+- **MySQL**: Sistema de gerenciamento de banco de dados relacional.
+- **HTML5 & CSS3**: Estruturação semântica e estilização (Layout moderno responsivo em Modo Escuro).
+- **JavaScript (ES6+)**: Comportamento da interface, lógica de busca e controle do banner de consentimento.
+- **JSpreadsheet (v4)**: Componente JavaScript para manipulação de tabelas ricas.
+- **Font Awesome**: Conjunto de ícones vetoriais.
 
 ---
 
-## 📂 Estrutura do Projeto
+## 📂 Estrutura Estrutural do Projeto
 
 ```text
 /
-├── index.php             # Vitrine principal de livros
-├── assets/               # Arquivos estáticos (style.css, scripts.js e a pasta img para imagens)
-├── includes/             
-│   └── functions.php     # Funções globais de cálculo e validação
-└── pages/                # Páginas internas do sistema, como login.php, carrinho.php, entre outros.
+├── index.php             # Tela principal / Prateleira dinâmica de livros
+├── assets/               # Recursos estáticos da aplicação
+│   ├── style.css         # Folha de estilo central (temas claro/escuro)
+│   └── script.js         # Lógica client-side e interceptação de eventos
+├── includes/             # Módulos de core do sistema
+│   ├── conexao.php       # Script de estabelecimento do canal MySQLi com o banco
+│   └── functions.php     # Biblioteca de funções reaproveitáveis e sanitização
+└── pages/                # Módulos e telas internas protegidas
+    ├── login.php         # Formulário de autenticação
+    ├── logout.php        # Encerramento e destruição de sessões
+    ├── carrinho.php      # Gerenciamento de itens selecionados
+    └── cadastrarlivro.php# Interface de inserção de dados no acervo

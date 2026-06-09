@@ -1,9 +1,26 @@
-<?php include '../includes/conexao.php'; ?>
 <?php
-session_start(); // Inicia
-session_unset(); // Remove
-session_destroy(); // Destroi a sessão completamente
+/**
+ * ARQUIVO: LOGOUT
+ * Papel: Sair da Biblioteca e Devolver o Crachá
+ */
 
-header("Location: login.php");//Manda para o Login
+// A COLA
+include '../includes/conexao.php'; 
+?>
+
+<?php
+// ENTRANDO NA SALA DE PROTOCOLO
+session_start(); 
+
+// ESVAZIANDO OS BOLSOS (Limpeza)
+session_unset(); 
+
+// QUEIMANDO O CRACHÁ (Destruição)
+session_destroy(); 
+
+// EXPULSÃO AMIGÁVEL
+header("Location: login.php");
+
+// PORTA TRANCADA
 exit();
 ?>
